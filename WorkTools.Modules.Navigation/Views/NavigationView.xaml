@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WorkTools.Modules.Navigation.Views.NavigationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WorkTools.Modules.Navigation.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:info="clr-namespace:WorkTools.Infrastructure;assembly=WorkTools.Infrastructure"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Margin="5" >
+            <Button Command="{Binding NavigateCommand}" CommandParameter="AndroidTranslationView" Margin="5">Navigate to Anroid tools</Button>
+            <!--<Button Command="{Binding NavigateCommand}" CommandParameter="Eric" Margin="5">Navigate to Anroid tools</Button>-->
+        </StackPanel>
+    </Grid>
+</UserControl>

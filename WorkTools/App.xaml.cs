@@ -7,6 +7,7 @@ using WorkTools.Modules.Navigation.ViewModels;
 using WorkTools.Modules.Android;
 using Prism.Mvvm;
 using CommonServiceLocator;
+using WorkTools.Modules.Windows;
 
 namespace WorkTools
 {
@@ -28,7 +29,9 @@ namespace WorkTools
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<NavigationModule>();
+            moduleCatalog.AddModule<WindowsModule>();
             moduleCatalog.AddModule<AndroidModule>();
+
 
             // generic type
             //ViewModelLocationProvider.Register<MainWindow, CustomViewModel>();

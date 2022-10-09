@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WorkTools.Modules.Android.Views"
-             xmlns:prism="http://www.codeplex.com/prism">
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:thisModules="clr-namespace:WorkTools.Modules.Android">
     <UserControl.Resources>
         <Style TargetType="{x:Type TabItem}"
                x:Key="HeaderStyle">
@@ -15,9 +16,10 @@
     </UserControl.Resources>
     <Grid>
         <TabControl
-            prism:RegionManager.RegionName="TabRegion"
+            prism:RegionManager.RegionName="{x:Static thisModules:AndroidModuleRegionNames.TabRegion}"
             HorizontalAlignment="Stretch"
             ItemContainerStyle="{StaticResource HeaderStyle}">
+   
         </TabControl>
     </Grid>
 </UserControl>

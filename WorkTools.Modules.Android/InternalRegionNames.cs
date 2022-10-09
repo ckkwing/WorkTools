@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkTools.Modules.Android.ViewModels
+namespace WorkTools.Modules.Android
 {
-    public class AndroidTranslationViewModel
+    public class AndroidModuleRegionNames
     {
+        public const string TabRegion = @"TabRegion";
     }
 }

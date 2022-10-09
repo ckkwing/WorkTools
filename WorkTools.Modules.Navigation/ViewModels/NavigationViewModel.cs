@@ -15,10 +15,11 @@ namespace WorkTools.Modules.Navigation.ViewModels
 {
     public class NavigationViewModel : BindableBase
     {
-        private static Uri TestUri = new Uri("AndroidTranslationView", UriKind.Relative);
+        //private static Uri TestUri = new Uri("AndroidTranslationView", UriKind.Relative);
         private readonly IRegionManager _regionManager;
         private readonly IContainerExtension _containerExtension;
 
+        public DelegateCommand LoadedCommand { get; private set; }
         public DelegateCommand<string> NavigateCommand { get; private set; }
 
         public NavigationViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
@@ -26,10 +27,16 @@ namespace WorkTools.Modules.Navigation.ViewModels
             _regionManager = regionManager;
             _containerExtension = containerExtension;
 
-            NavigateCommand = new DelegateCommand<string>(Navigate);
+            LoadedCommand = new DelegateCommand(OnLoaded);
+            NavigateCommand = new DelegateCommand<string>(OnNavigate);
         }
 
-        private void Navigate(string navigatePath)
+        private void OnLoaded()
+        {
+            NavigateCommand.Execute(Const.VIEW_WINDOWS_MAIN);
+        }
+
+        private void OnNavigate(string navigatePath)
         {
             if (navigatePath != null)
                 _regionManager.RequestNavigate(RegionNames.MainRegion, navigatePath);

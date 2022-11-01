@@ -3,6 +3,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -20,8 +21,10 @@ namespace WorkTools.Modules.Windows.ViewModels
     {
         private readonly IRegionManager _regionManager;
         private readonly IContainerExtension _containerExtension;
+        private ConcurrentDictionary<string, FileStream> _lockedDic = new ConcurrentDictionary<string, FileStream>();
 
         public DelegateCommand LockFileCommand { get; private set; }
+        public DelegateCommand UnlockFileCommand { get; private set; }
 
         public WindowsToolsMainViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
@@ -33,24 +36,49 @@ namespace WorkTools.Modules.Windows.ViewModels
         private void InitializeCommands()
         {
             LockFileCommand = new DelegateCommand(OnLockFile);
+            UnlockFileCommand = new DelegateCommand(OnUnlockFile);
         }
 
         private void OnLockFile()
         {
-            string filePath = string.Empty;
+            //string filePath = string.Empty;
+            IList<string> filePathList = new List<string>();
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.Multiselect = true;
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                filePath = openFileDialog.FileName;
+                //filePath = openFileDialog.FileName;
+                openFileDialog.FileNames?.ToList().ForEach(path => filePathList.Add(path));
             }
 
-            if (!File.Exists(filePath))
+            //if (!File.Exists(filePath))
+            //{
+            //    MessageBox.Show("File not found");
+            //    return;
+            //}
+            foreach (string filePath in filePathList)
             {
-                MessageBox.Show("File not found");
+                if (!File.Exists(filePath))
+                    continue;
+                FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                _lockedDic.TryAdd(filePath, fs);
+            }
+        }
+
+        public void OnUnlockFile()
+        {
+            if (_lockedDic.Count == 0)
                 return;
+
+            foreach (FileStream fs in _lockedDic.Values)
+            {
+                fs.Close();
             }
 
-            File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+            _lockedDic.Clear();
+            MessageBox.Show("Files unlocked");
         }
+
+
     }
 }

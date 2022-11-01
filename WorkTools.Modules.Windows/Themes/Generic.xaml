@@ -3,4 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:WorkTools.Modules.Windows">
 
+    <!--<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Width" Value="80" />
+        <Setter Property="Height" Value="22" />
+    </Style>-->
+
 </ResourceDictionary>

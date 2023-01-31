@@ -33,6 +33,7 @@ namespace WorkTools
             moduleCatalog.AddModule<AndroidModule>();
 
 
+
             // generic type
             //ViewModelLocationProvider.Register<MainWindow, CustomViewModel>();
             //ServiceLocator.Current.GetInstance<IRegionManager>();

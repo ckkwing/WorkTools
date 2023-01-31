@@ -1,0 +1,30 @@
+﻿<Window x:Class="WorkTools.Modules.Windows.Views.RemoteLogOnView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkTools.Modules.Windows.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:uiHelpers="clr-namespace:WorkTools.Infrastructure.UIHelpers;assembly=WorkTools.Infrastructure"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="RemoteLogOnView" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Remote address:" Width="100" />
+            <TextBox Text="{Binding Path=RemoteAddress}" Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="User name:" Width="100" />
+            <TextBox Text="{Binding Path=UserName}" Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Password:" Width="100" />
+            <PasswordBox Width="200"
+            uiHelpers:PasswordBoxAssistant.IsBound="True" 
+            uiHelpers:PasswordBoxAssistant.Binding="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <Button Content="Connect" Command="{Binding Path=ConnectCommand}" />
+        <Button Content="Disconnect" Command="{Binding Path=DisconnectCommand}" />
+    </StackPanel>
+</Window>

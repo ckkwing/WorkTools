@@ -12,12 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shapes;
+using WorkTools.Infrastructure;
+using WorkTools.Modules.Windows.Views;
 
 namespace WorkTools.Modules.Windows.ViewModels
 {
     //[Export]
     //[PartCreationPolicy(CreationPolicy.Shared)]
-    public class WindowsToolsMainViewModel : BindableBase
+    public class WindowsToolsMainViewModel : BaseViewModel
     {
         private readonly IRegionManager _regionManager;
         private readonly IContainerExtension _containerExtension;
@@ -25,6 +27,8 @@ namespace WorkTools.Modules.Windows.ViewModels
 
         public DelegateCommand LockFileCommand { get; private set; }
         public DelegateCommand UnlockFileCommand { get; private set; }
+        public DelegateCommand OpenFileWatcherCommand { get; private set; }
+        public DelegateCommand LogonRemoteCommand { get; private set; }
 
         public WindowsToolsMainViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
@@ -37,6 +41,20 @@ namespace WorkTools.Modules.Windows.ViewModels
         {
             LockFileCommand = new DelegateCommand(OnLockFile);
             UnlockFileCommand = new DelegateCommand(OnUnlockFile);
+            OpenFileWatcherCommand = new DelegateCommand(OnOpenFileWatcher);
+            LogonRemoteCommand = new DelegateCommand(OnLogonRemote);
+        }
+
+        private void OnLogonRemote()
+        {
+            RemoteLogOnView remoteLogOnView = new RemoteLogOnView();
+            remoteLogOnView.ShowDialog();
+        }
+
+        private void OnOpenFileWatcher()
+        {
+            FileWatcherView fileWatcherView = new FileWatcherView();
+            fileWatcherView.ShowDialog();
         }
 
         private void OnLockFile()

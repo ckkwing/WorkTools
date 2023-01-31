@@ -14,5 +14,7 @@
     <WrapPanel>
         <Button Content="Lock files" Command="{Binding Path=LockFileCommand}" />
         <Button Content="Unlock locked files" Command="{Binding Path=UnlockFileCommand}" />
+        <Button Content="File System Watcher" Command="{Binding Path=OpenFileWatcherCommand}" />
+        <Button Content="Remote log on" Command="{Binding Path=LogonRemoteCommand}" />
     </WrapPanel>
 </UserControl>

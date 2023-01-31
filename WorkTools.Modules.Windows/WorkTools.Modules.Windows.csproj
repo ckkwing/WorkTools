@@ -35,6 +35,9 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="GongShell">
+      <HintPath>..\3rd\gong-shell-0.6.0\GongShell.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -79,6 +82,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\FileWatcherView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RemoteLogOnView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WindowsToolsMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,7 +109,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\FileWatcherViewModel.cs" />
+    <Compile Include="ViewModels\RemoteLogOnViewModel.cs" />
     <Compile Include="ViewModels\WindowsToolsMainViewModel.cs" />
+    <Compile Include="Views\FileWatcherView.xaml.cs">
+      <DependentUpon>FileWatcherView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RemoteLogOnView.xaml.cs">
+      <DependentUpon>RemoteLogOnView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WindowsToolsMainView.xaml.cs">
       <DependentUpon>WindowsToolsMainView.xaml</DependentUpon>
     </Compile>
@@ -114,6 +133,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{b69103e0-0a16-41dd-a989-ca5da1ea4546}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WorkTools.Infrastructure\WorkTools.Infrastructure.csproj">
       <Project>{480a8c14-1474-4266-8cb4-2a3698c01f28}</Project>
       <Name>WorkTools.Infrastructure</Name>

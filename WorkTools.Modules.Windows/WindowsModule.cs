@@ -19,7 +19,8 @@ namespace WorkTools.Modules.Windows
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(WindowsToolsMainView));
-  
+
+
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

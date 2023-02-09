@@ -1,0 +1,58 @@
+﻿<Window x:Class="WorkTools.Modules.Windows.Views.DiffToolView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkTools.Modules.Windows.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:converters="clr-namespace:WorkTools.Infrastructure.Converters;assembly=WorkTools.Infrastructure" 
+        xmlns:uiHelper="clr-namespace:WorkTools.Infrastructure.UIHelpers;assembly=WorkTools.Infrastructure"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="DiffToolView" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
+        <converters:BoolToVisibilityCollapseConverter x:Key="BoolToVisibilityCollapseConverter" />
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Left file" Command="{Binding Path=SelectLeftFileCommand}" />
+            <TextBox Grid.Column="1" IsReadOnly="True"  Text="{Binding Path=LeftFilePath, Mode=OneWay}" />
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Right file" Command="{Binding Path=SelectRightFileCommand}" />
+            <TextBox Grid.Column="1" IsReadOnly="True"  Text="{Binding Path=RightFilePath, Mode=OneWay}" />
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <CheckBox IsChecked="{Binding Path=IsSetSamePropertiesForFile}" Content="Set the same properties for the file" VerticalAlignment="Center" />
+            <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Path=ComparisonMethods, Converter={StaticResource EnumToCollectionConverter}, Mode=OneWay}"
+                      DisplayMemberPath="Description" SelectedValuePath="Value" SelectedValue="{Binding Path=CurrentComparisonMethod}" />
+            <Button Margin="10,0,0,0" Content="Start to compare" Command="{Binding Path=StartToCompareCommand}" />
+            <Button Margin="10,0,0,0" Content="Start to diff" Command="{Binding Path=StartToDiffCommand}" />
+        </StackPanel>
+        <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" IsIndeterminate="True" Height="14" Visibility="{Binding Path=InProgress, Converter={StaticResource BoolToVisibilityCollapseConverter}}" />
+        <TextBox Grid.Row="3" Grid.ColumnSpan="2" Height="80" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding Path=Message}" />
+        <TextBox Visibility="Collapsed" Grid.Row="4" Grid.ColumnSpan="2" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" ScrollViewer.CanContentScroll="True" Style="{x:Null}" Text="{Binding Path=DiffResult}" />
+        <WebBrowser Grid.Row="4" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    uiHelper:WebBrowserAssistant.HtmlString="{Binding HTMLString}"/>
+    </Grid>
+</Window>

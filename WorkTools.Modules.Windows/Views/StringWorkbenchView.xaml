@@ -1,0 +1,33 @@
+﻿<Window x:Class="WorkTools.Modules.Windows.Views.StringWorkbenchView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkTools.Modules.Windows.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:uiHelpers="clr-namespace:WorkTools.Infrastructure.UIHelpers;assembly=WorkTools.Infrastructure"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="StringWorkbenchView" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="MinWidth" Value="180" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="IsReadOnly" Value="True" />
+        </Style>
+        
+        
+        
+    </Window.Resources>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Select Xaml file" Command="{Binding Path=SelectXamlFileCommand}" />
+            <TextBox Margin="10,0,0,0" Text="{Binding Path=XamlLocation, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Select Excel template" Command="{Binding Path=SelectExcelTemplateCommand}" />
+            <TextBox Margin="10,0,0,0" Text="{Binding Path=ExcelLocation, Mode=OneWay}" />
+        </StackPanel>
+        <Button Content="Start Export" Command="{Binding Path=ExportCommand}" />
+    </StackPanel>
+</Window>

@@ -8,7 +8,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Margin" Value="10,0" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Width" Value="Auto" />
         </Style>
     </UserControl.Resources>
     <WrapPanel>
@@ -16,5 +17,7 @@
         <Button Content="Unlock locked files" Command="{Binding Path=UnlockFileCommand}" />
         <Button Content="File System Watcher" Command="{Binding Path=OpenFileWatcherCommand}" />
         <Button Content="Remote log on" Command="{Binding Path=LogonRemoteCommand}" />
+        <Button Content="Export Xaml string to Excel" Command="{Binding Path=ExportXamlStringtoExcel}" />
+        <Button Content="Diff tool" Command="{Binding Path=OpenDiffToolCommand}" />
     </WrapPanel>
 </UserControl>

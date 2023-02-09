@@ -29,6 +29,8 @@ namespace WorkTools.Modules.Windows.ViewModels
         public DelegateCommand UnlockFileCommand { get; private set; }
         public DelegateCommand OpenFileWatcherCommand { get; private set; }
         public DelegateCommand LogonRemoteCommand { get; private set; }
+        public DelegateCommand ExportXamlStringtoExcel { get; private set; }
+        public DelegateCommand OpenDiffToolCommand { get; private set; }
 
         public WindowsToolsMainViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
@@ -43,6 +45,20 @@ namespace WorkTools.Modules.Windows.ViewModels
             UnlockFileCommand = new DelegateCommand(OnUnlockFile);
             OpenFileWatcherCommand = new DelegateCommand(OnOpenFileWatcher);
             LogonRemoteCommand = new DelegateCommand(OnLogonRemote);
+            ExportXamlStringtoExcel = new DelegateCommand(OnExportXamlStringtoExcel);
+            OpenDiffToolCommand = new DelegateCommand(OnOpenDiffTool);
+        }
+
+        private void OnOpenDiffTool()
+        {
+            DiffToolView diffToolView = new DiffToolView();
+            diffToolView.ShowDialog();
+        }
+
+        private void OnExportXamlStringtoExcel()
+        {
+            StringWorkbenchView stringWorkbenchView = new StringWorkbenchView();
+            stringWorkbenchView.ShowDialog();
         }
 
         private void OnLogonRemote()

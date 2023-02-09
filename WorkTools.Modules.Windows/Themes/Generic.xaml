@@ -3,9 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:WorkTools.Modules.Windows">
 
-    <!--<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Width" Value="80" />
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="MinWidth" Value="80" />
+        <Setter Property="MaxWidth" Value="180" />
         <Setter Property="Height" Value="22" />
-    </Style>-->
+    </Style>
 
+
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="MinWidth" Value="180" />
+        <Setter Property="Height" Value="26" />
+    </Style>
 </ResourceDictionary>

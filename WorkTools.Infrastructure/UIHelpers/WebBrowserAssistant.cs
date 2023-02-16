@@ -11,7 +11,7 @@ namespace WorkTools.Infrastructure.UIHelpers
     /// <summary>
     /// Attached Assistant
     /// </summary>
-    public class WebBrowserAssistant
+    public static class WebBrowserAssistant
     {// "HtmlString" attached property for a WebView
         public static readonly DependencyProperty HtmlStringProperty =
            DependencyProperty.RegisterAttached("HtmlString", typeof(string), typeof(WebBrowserAssistant), new PropertyMetadata("", OnHtmlStringChanged));

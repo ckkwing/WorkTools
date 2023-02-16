@@ -1,4 +1,5 @@
 ﻿using Algorithms;
+using NPOI.OpenXml4Net.OPC.Internal;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
@@ -88,6 +89,28 @@ namespace WorkTools.Modules.Windows.ViewModels
             }
         }
 
+        private string _leftString = string.Empty;
+        public string LeftString
+        {
+            get => _leftString;
+            set
+            {
+                _leftString = value;
+                RaisePropertyChanged("LeftString");
+            }
+        }
+
+        private string _rightString = string.Empty;
+        public string RightString
+        {
+            get => _rightString;
+            set
+            {
+                _rightString = value;
+                RaisePropertyChanged("RightString");
+            }
+        }
+
         private bool _inProgress = false;
         public bool InProgress
         {
@@ -115,7 +138,7 @@ namespace WorkTools.Modules.Windows.ViewModels
         public DelegateCommand SelectRightFileCommand { get; private set; }
         public DelegateCommand StartToCompareCommand { get; private set; }
 
- public DelegateCommand StartToDiffCommand { get; private set; }
+        public DelegateCommand StartToDiffCommand { get; private set; }
 
         public DiffToolViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
@@ -132,23 +155,56 @@ namespace WorkTools.Modules.Windows.ViewModels
             StartToDiffCommand = new DelegateCommand(OnStartToDiff);
         }
 
-        private void OnStartToDiff()
+        private async void OnStartToDiff()
         {
             //MessageBox.Show("Not implement");
+            //return;
 
-            string htmlTemplate = GetHTMLTemplate();
-            diff_match_patch dmp = new diff_match_patch();
-            var leftText = File.ReadAllText(LeftFilePath);
-            var rightText = File.ReadAllText(RightFilePath);
+            if (!IsValidSources())
+                return;
 
-            List<Diff> diffs = dmp.diff_main(leftText, rightText);
-            dmp.diff_cleanupSemantic(diffs);
-            for (int i = 0; i < diffs.Count; i++)
-            {
-                // += diffs[i].text;
-            }
+            await Task.Run(() => {
+                string htmlTemplate = GetHTMLTemplate();
+                diff_match_patch dmp = new diff_match_patch();
 
-            HTMLString = htmlTemplate.Replace("[CONTENT]", dmp.diff_prettyHtml(diffs).Replace("&para;", string.Empty));
+                bool isBinaryOfF1 = Utility.Common.FileHelper.IsBinary(LeftFilePath);
+                bool isBinaryOfF2 = Utility.Common.FileHelper.IsBinary(RightFilePath);
+
+                var leftText = string.Empty;
+                try
+                {
+                    using (StreamReader sr = File.OpenText(LeftFilePath))
+                    {
+                        while (!sr.EndOfStream)
+                        {
+                            leftText += sr.ReadLine();
+                            if (!sr.EndOfStream)
+                            {
+                                leftText += Environment.NewLine;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                //var leftText = File.ReadAllText(LeftFilePath);
+                var rightText = File.ReadAllText(RightFilePath);
+
+                List<Diff> diffs = dmp.diff_main(leftText, rightText);
+                dmp.diff_cleanupSemantic(diffs);
+                for (int i = 0; i < diffs.Count; i++)
+                {
+                    // += diffs[i].text;
+                }
+
+                HTMLString = htmlTemplate.Replace("[CONTENT]", dmp.diff_prettyHtml(diffs).Replace("&para;", string.Empty));
+                LeftString = dmp.diff_text1(diffs);
+                RightString = dmp.diff_text2(diffs);
+            });
+
         }
 
         private string GetHTMLTemplate()
@@ -156,13 +212,20 @@ namespace WorkTools.Modules.Windows.ViewModels
             return $"<!DOCTYPE html>\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>\r\n[CONTENT]\r\n</body>\r\n</html>";
         }
 
-        private async void OnStartToCompare()
+        private bool IsValidSources()
         {
             if (LeftFilePath.IsNullOrEmpty() || RightFilePath.IsNullOrEmpty())
             {
                 MessageBox.Show("Any of file path can't be empty");
-                return;
+                return false;
             }
+            return true;
+        }
+
+        private async void OnStartToCompare()
+        {
+            if (!IsValidSources())
+                return;
 
             bool identical = false;
             InProgress = true;
@@ -300,7 +363,7 @@ namespace WorkTools.Modules.Windows.ViewModels
 
             return true;
 
-            ////Will be out of memory
+            ////Will be out of memory if file is too large
             //byte[] _source = File.ReadAllBytes(file1);
             //byte[] _dest = File.ReadAllBytes(file2);
             //if (_source.Length != _dest.Length)

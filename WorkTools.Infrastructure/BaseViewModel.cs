@@ -40,6 +40,7 @@ namespace WorkTools.Infrastructure
             catch (Exception ex)
             {
                 //LogHelper.UILogger.Debug(string.Format("RunOnUIThread error:{0}", ex.Message));
+                Console.WriteLine(string.Format("RunOnUIThread error:{0}", ex.Message));
             }
         }
 
@@ -71,6 +72,7 @@ namespace WorkTools.Infrastructure
             catch (Exception ex)
             {
                 //LogHelper.UILogger.Debug(string.Format("RunOnUIThreadAsync error:{0}", ex.Message));
+                Console.WriteLine(string.Format("RunOnUIThreadAsync error:{0}", ex.Message));
             }
         }
     }

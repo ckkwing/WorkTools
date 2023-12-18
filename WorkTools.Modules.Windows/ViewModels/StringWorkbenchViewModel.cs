@@ -1,28 +1,33 @@
-﻿using NPOI.POIFS.NIO;
+﻿using NLogger;
+using NPOI.POIFS.NIO;
 using NPOI.SS.UserModel;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Resources;
+using System.Xml.Serialization;
 using WorkTools.Infrastructure;
+using WorkTools.Infrastructure.Model;
 using static Utility.WinNative.MprAPI;
 
 namespace WorkTools.Modules.Windows.ViewModels
 {
     public class StringWorkbenchViewModel : BaseViewModel
     {
-        private string _xamlLocation = string.Empty;
-        public string XamlLocation
+        private string _xmlLocation = string.Empty;
+        public string XmlLocation
         {
-            get => _xamlLocation;
+            get => _xmlLocation;
             set
             {
-                _xamlLocation = value;
-                RaisePropertyChanged("XamlLocation");
+                _xmlLocation = value;
+                RaisePropertyChanged("XmlLocation");
             }
         }
 
@@ -37,7 +42,7 @@ namespace WorkTools.Modules.Windows.ViewModels
             }
         }
 
-        public DelegateCommand SelectXamlFileCommand { get; private set; }
+        public DelegateCommand SelectXmlFileCommand { get; private set; }
         public DelegateCommand SelectExcelTemplateCommand { get; private set; }
         public DelegateCommand ExportCommand { get; private set; }
 
@@ -48,9 +53,31 @@ namespace WorkTools.Modules.Windows.ViewModels
 
         private void InitializeCommands()
         {
-            SelectXamlFileCommand = new DelegateCommand(OnSelectXamlFile);
+            SelectXmlFileCommand = new DelegateCommand(OnSelectXmlFile);
             SelectExcelTemplateCommand = new DelegateCommand(OnSelectExcelTemplate);
             ExportCommand = new DelegateCommand(OnExport);
+        }
+
+        private StringResources LoadXML(string xmlFile)
+        {
+            StringResources stringResources = null;
+            try
+            {
+                if (File.Exists(xmlFile))
+                {
+                    Type[] types = { typeof(StringResources) };
+                    XmlSerializer serializer = new XmlSerializer(typeof(StringResources), types);
+                    using (FileStream fs = File.Open(xmlFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        stringResources = (StringResources)serializer.Deserialize(fs);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.DefaultLogger.Error("Load StringResources Failed", ex);
+            }
+            return stringResources;
         }
 
         private async void OnExport()
@@ -59,7 +86,7 @@ namespace WorkTools.Modules.Windows.ViewModels
             {
                 try
                 {
-                    if (string.IsNullOrEmpty(XamlLocation) || string.IsNullOrEmpty(ExcelLocation))
+                    if (string.IsNullOrEmpty(XmlLocation) || string.IsNullOrEmpty(ExcelLocation))
                     {
                         RunOnUIThreadAsync(() =>
                         {
@@ -68,8 +95,9 @@ namespace WorkTools.Modules.Windows.ViewModels
                         return;
                     }
 
-                    ResourceDictionary resourceDictionary = new ResourceDictionary();
-                    resourceDictionary.Source = new Uri(XamlLocation);
+                    StringResources stringResources = LoadXML(XmlLocation);
+                    //ResourceDictionary resourceDictionary = new ResourceDictionary();
+                    //resourceDictionary.Source = new Uri(XamlLocation);
 
                     int iIDIndex = -1;
                     int iStringIndex = -1;
@@ -102,7 +130,7 @@ namespace WorkTools.Modules.Windows.ViewModels
                     if (iIDIndex > -1 && iStringIndex > -1 && iEnUsIndex > -1)
                     {
                         int startRow = 1;
-                        foreach (var key in resourceDictionary.Keys)
+                        foreach (var stringItem in stringResources.StringItems)
                         {
                             IRow newRow = sheet.GetRow(startRow) ?? (IRow)sheet.CreateRow(startRow);
                             if (null == newRow)
@@ -111,9 +139,9 @@ namespace WorkTools.Modules.Windows.ViewModels
                             ICell idCell = newRow.GetCell(iIDIndex) ?? newRow.CreateCell(iIDIndex);
                             idCell.SetCellValue(startRow);
                             ICell stringCell = newRow.GetCell(iStringIndex) ?? newRow.CreateCell(iStringIndex);
-                            stringCell.SetCellValue(key.ToString());
+                            stringCell.SetCellValue(stringItem.Name);
                             ICell enCell = newRow.GetCell(iEnUsIndex) ?? newRow.CreateCell(iEnUsIndex);
-                            enCell.SetCellValue(resourceDictionary[key].ToString());
+                            enCell.SetCellValue(stringItem.Value);
 
                             startRow++;
                         }
@@ -154,14 +182,14 @@ namespace WorkTools.Modules.Windows.ViewModels
             }
         }
 
-        private void OnSelectXamlFile()
+        private void OnSelectXmlFile()
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            openFileDialog.Filter = "Xaml | *.xaml";
+            openFileDialog.Filter = "Xml | *.xml";
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                XamlLocation = openFileDialog.FileName;
+                XmlLocation = openFileDialog.FileName;
             }
 
         }

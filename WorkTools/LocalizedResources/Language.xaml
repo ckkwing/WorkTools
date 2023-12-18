@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <!--Common-->
+    <System:String x:Uid="IDS_OK" x:Key="IDS_OK">Ok</System:String>
+    <System:String x:Uid="IDS_SAVE" x:Key="IDS_SAVE">Save</System:String>
+    <System:String x:Uid="IDS_CANCEL" x:Key="IDS_CANCEL">Cancel</System:String>
+    <System:String x:Uid="IDS_BROWSE" x:Key="IDS_BROWSE">Browse</System:String>
+    <System:String x:Uid="IDS_ADD" x:Key="IDS_ADD">Add</System:String>
+    <System:String x:Uid="IDS_REMOVE" x:Key="IDS_REMOVE">Remove</System:String>
+    <System:String x:Uid="IDS_PLAY" x:Key="IDS_PLAY">Play</System:String>
+    <System:String x:Uid="IDS_IMAGE" x:Key="IDS_IMAGE">Image</System:String>
+    <System:String x:Uid="IDS_VIDEO" x:Key="IDS_VIDEO">Video</System:String>
+    <System:String x:Uid="IDS_MUSIC" x:Key="IDS_MUSIC">Music</System:String>
+    <System:String x:Uid="IDS_DOCUMENT" x:Key="IDS_DOCUMENT">Document</System:String>
+    <System:String x:Uid="IDS_FOLDER" x:Key="IDS_FOLDER">Folder</System:String>
+    <System:String x:Uid="IDS_ALL" x:Key="IDS_ALL">All</System:String>
+    <System:String x:Uid="IDS_START" x:Key="IDS_START">Start</System:String>
+
+
+    <!--Menu-->
+    <System:String x:Uid="IDS_MENU_FILE" x:Key="IDS_MENU_FILE">File</System:String>
+    <System:String x:Uid="IDS_MENU_VIEW" x:Key="IDS_MENU_VIEW">View</System:String>
+
+    <!--Action-->
+    <System:String x:Uid="IDS_ACTION_IN_PROGRESS" x:Key="IDS_ACTION_IN_PROGRESS">In Progress</System:String>
+    <System:String x:Uid="IDS_ACTION_OPENLOCATION" x:Key="IDS_ACTION_OPENLOCATION">Open location</System:String>
+    
+
+    <!--Settings-->
+    <System:String x:Uid="IDS_SETTING" x:Key="IDS_SETTING">Setting</System:String>
+
+    <System:String x:Uid="IDS_SELECT_TRANSLATION_EXCEL_FILE" x:Key="IDS_SELECT_TRANSLATION_EXCEL_FILE">Please choose a excel file which is contains new translation</System:String>
+    <System:String x:Uid="IDS_SELECT_TRANSLATION_SOURCE_PARENT_FOLDER" x:Key="IDS_SELECT_TRANSLATION_SOURCE_PARENT_FOLDER">Please choose the parent folder of resources</System:String>
+    <System:String x:Uid="IDS_SELECT_SOURCE_FOLDER" x:Key="IDS_SELECT_SOURCE_FOLDER">Select source folder</System:String>
+    <System:String x:Uid="IDS_SELECT_TARGET_FOLDER" x:Key="IDS_SELECT_TARGET_FOLDER">Select target folder</System:String>
+    <System:String x:Uid="IDS_TARGET_PROJECT" x:Key="IDS_TARGET_PROJECT">Target project</System:String>
+</ResourceDictionary>

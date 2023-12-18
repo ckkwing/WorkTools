@@ -19,5 +19,7 @@
         <Button Content="Remote log on" Command="{Binding Path=LogonRemoteCommand}" />
         <Button Content="Export Xaml string to Excel" Command="{Binding Path=ExportXamlStringtoExcel}" />
         <Button Content="Diff tool" Command="{Binding Path=OpenDiffToolCommand}" />
+        <Button Content="SMB/CIFS" Command="{Binding Path=OpenDiffToolCommand}" />
+        <Button Content="Google API" Command="{Binding Path=AccessGoogleAPICommand}" />
     </WrapPanel>
 </UserControl>

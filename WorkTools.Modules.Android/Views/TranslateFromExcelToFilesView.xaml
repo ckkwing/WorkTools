@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="WorkTools.Modules.Android.Views.TranslateFromExcelToFilesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WorkTools.Modules.Android.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:converters="clr-namespace:WorkTools.Infrastructure.Converters;assembly=WorkTools.Infrastructure">
+    <UserControl.Resources>
+        <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
+    </UserControl.Resources>
+    <StackPanel Margin="30">
+        <TextBlock Text="{DynamicResource IDS_SELECT_TRANSLATION_EXCEL_FILE}"/>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBox Width="200" Text="{Binding ExcelFilePath}" />
+            <Button Content="{DynamicResource IDS_BROWSE}" Margin="10,0,0,0" Command="{Binding BrowseExcelFileCommand}" />
+        </StackPanel>
+        <Rectangle Fill="#aaa" HorizontalAlignment="Stretch" Height="1" Margin="0,30"/>
+        <TextBlock Text="{DynamicResource IDS_SELECT_TRANSLATION_SOURCE_PARENT_FOLDER}"/>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBox Width="200" Text="{Binding ParentFolderPath}" />
+            <Button Content="{DynamicResource IDS_BROWSE}" Margin="10,0,0,0" Command="{Binding BrowseParentFolderCommand}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Width="200" Text="{DynamicResource IDS_TARGET_PROJECT}"/>
+            <ComboBox
+                Margin="10,0,0,0"
+                DisplayMemberPath="Description"
+                ItemsSource="{Binding Path=Projects, Converter={StaticResource EnumToCollectionConverter}, Mode=OneWay}"
+                SelectedValue="{Binding Path=CurrentProject}"
+                SelectedValuePath="Value" />
+        </StackPanel>
+        <Rectangle Fill="#aaa" HorizontalAlignment="Stretch" Height="1" Margin="0,30"/>
+        <Button Content="{DynamicResource IDS_START}" Command="{Binding StartCommand}"/>
+    </StackPanel>
+</UserControl>

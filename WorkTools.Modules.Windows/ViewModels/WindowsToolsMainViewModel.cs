@@ -32,6 +32,8 @@ namespace WorkTools.Modules.Windows.ViewModels
         public DelegateCommand ExportXamlStringtoExcel { get; private set; }
         public DelegateCommand OpenDiffToolCommand { get; private set; }
 
+        public DelegateCommand OpenSMBCommand { get; private set; }
+        public DelegateCommand AccessGoogleAPICommand { get; private set; }
         public WindowsToolsMainViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
             _regionManager = regionManager;
@@ -47,6 +49,19 @@ namespace WorkTools.Modules.Windows.ViewModels
             LogonRemoteCommand = new DelegateCommand(OnLogonRemote);
             ExportXamlStringtoExcel = new DelegateCommand(OnExportXamlStringtoExcel);
             OpenDiffToolCommand = new DelegateCommand(OnOpenDiffTool);
+            OpenSMBCommand = new DelegateCommand(OnOpenSMB);
+            AccessGoogleAPICommand = new DelegateCommand(OnAccessGoogleAPI);
+        }
+
+        private void OnAccessGoogleAPI()
+        {
+            GoogleAPIView googleAPIView = new GoogleAPIView();
+            googleAPIView.ShowDialog();
+        }
+
+        private void OnOpenSMB()
+        {
+            MessageBox.Show("Not implemented!");
         }
 
         private void OnOpenDiffTool()

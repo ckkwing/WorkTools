@@ -19,8 +19,8 @@ namespace WorkTools.Modules.Android
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(AndroidTranslationView));
-            regionManager.RegisterViewWithRegion(AndroidModuleRegionNames.TabRegion,
-                                                    () => containerProvider.Resolve<TestView>());
+            //regionManager.RegisterViewWithRegion(AndroidModuleRegionNames.TabRegion,
+            //                                        () => containerProvider.Resolve<TestView>());
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

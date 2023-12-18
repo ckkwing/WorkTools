@@ -4,27 +4,62 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkTools"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:info="clr-namespace:WorkTools.Infrastructure;assembly=WorkTools.Infrastructure"
+        xmlns:customControl="clr-namespace:WorkTools.Theme.CustomControl;assembly=WorkTools.Theme"
         Title="Shell" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <!--<ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static info:RegionNames.HeaderRegion}" />-->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*" MinWidth="180" />
-                <ColumnDefinition Width="70*" MinWidth="180"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <ContentControl prism:RegionManager.RegionName="{x:Static info:RegionNames.NavigationRegion}" />
-            </Grid>
-            <GridSplitter Width="4" />
-            <Grid Grid.Column="1">
-                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static info:RegionNames.MainRegion}" />
+        <i:Interaction.Behaviors>
+            <ei:DataStateBehavior Binding="{Binding InProgress}" 
+                                  Value="True" 
+                                  TrueState="InProgress" FalseState="NotInProgress"/>
+        </i:Interaction.Behaviors>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ProgressStates">
+                <VisualState x:Name="NotInProgress"/>
+
+                <VisualState x:Name="InProgress">
+                    <Storyboard>
+
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="InProgressIndicator">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <customControl:BusyIndicator x:Name="InProgressIndicator" Information="{DynamicResource IDS_ACTION_IN_PROGRESS}" Visibility="Collapsed">
+        </customControl:BusyIndicator>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!--<ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static info:RegionNames.HeaderRegion}" />-->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*" MinWidth="180" />
+                    <ColumnDefinition Width="70*" MinWidth="180"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static info:RegionNames.NavigationRegion}" />
+                </Grid>
+                <GridSplitter Width="4" />
+                <Grid Grid.Column="1">
+                    <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static info:RegionNames.MainRegion}" />
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
+
 </Window>

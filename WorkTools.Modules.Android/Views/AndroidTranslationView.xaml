@@ -19,7 +19,7 @@
             prism:RegionManager.RegionName="{x:Static thisModules:AndroidModuleRegionNames.TabRegion}"
             HorizontalAlignment="Stretch"
             ItemContainerStyle="{StaticResource HeaderStyle}">
-   
+            <local:TranslateFromExcelToFilesView />
         </TabControl>
     </Grid>
 </UserControl>

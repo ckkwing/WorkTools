@@ -38,5 +38,13 @@ namespace WorkTools
             //ViewModelLocationProvider.Register<MainWindow, CustomViewModel>();
             //ServiceLocator.Current.GetInstance<IRegionManager>();
         }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            ResourceDictionary languageRes = ResourcesLoader.LoadLanguage(System.Globalization.CultureInfo.CurrentUICulture);
+            Current.Resources.MergedDictionaries.Add(languageRes);
+        }
     }
 }

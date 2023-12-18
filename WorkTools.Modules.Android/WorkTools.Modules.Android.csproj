@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Build\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -48,8 +48,10 @@
       <HintPath>..\packages\Prism.Wpf.7.1.0.431\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.7.1.0.431\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -85,10 +87,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TranslateFromExcelToFilesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidModule.cs" />
-    <Compile Include="InternalRegionNames.cs" />
+    <Compile Include="AndroidModuleRegionNames.cs" />
+    <Compile Include="Constant.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\TranslationItem.cs" />
+    <Compile Include="Model\TranslationResourcesEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,11 +113,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\AndroidTranslationViewModel.cs" />
+    <Compile Include="ViewModels\TranslateFromExcelToFilesViewModel.cs" />
     <Compile Include="Views\AndroidTranslationView.xaml.cs">
       <DependentUpon>AndroidTranslationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TranslateFromExcelToFilesView.xaml.cs">
+      <DependentUpon>TranslateFromExcelToFilesView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -121,9 +135,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBUtility\DBUtility.csproj">
+      <Project>{848702c6-4f28-4ecc-8185-36342ce299c2}</Project>
+      <Name>DBUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NLogger\NLogger.csproj">
+      <Project>{2055C0D2-9E61-410D-B3B1-EA843E1C851F}</Project>
+      <Name>NLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{b69103e0-0a16-41dd-a989-ca5da1ea4546}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WorkTools.Infrastructure\WorkTools.Infrastructure.csproj">
       <Project>{480A8C14-1474-4266-8CB4-2A3698C01F28}</Project>
       <Name>WorkTools.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkTools.Theme\WorkTools.Theme.csproj">
+      <Project>{004a1ab4-4c05-4860-96bb-ef0c23ec1341}</Project>
+      <Name>WorkTools.Theme</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -36,7 +36,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" x:Name="textBoxOutput" Margin="22" TextWrapping="Wrap" Text="{Binding Path=Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            <TextBox Grid.Column="0" x:Name="textBoxOutput" Margin="22" TextWrapping="Wrap" Text="{Binding Path=Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Top"
                      IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" />
             <ListBox Grid.Column="1" Margin="22" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding UIGoogleFiles}">
                 <ListBox.ItemTemplate>

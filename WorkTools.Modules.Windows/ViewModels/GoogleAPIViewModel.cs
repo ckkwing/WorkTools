@@ -29,8 +29,10 @@ namespace WorkTools.Modules.Windows.ViewModels
         private const string PERSISTENCE_CREDENTIAL_NAME = "echen";
         private const string FILEID_ROOT = "root";
 
-        private const string CLIENT_ID_BIU = "14450100300-pptinqi1g1mf9p0foju8c7487nhe2bbr.apps.googleusercontent.com";
-        private const string CLIENT_SECRET_BIU = "QlUqccTF8ptowJKBov21uGNJ";
+        private const string CLIENT_ID_BIU = "14450100300-pptinqi1g1mf9p0foju8c7487nhe2bbr.apps.googleusercontent.com"; //"562722407610-vfdfel9djk3njbt189qvpic7udf8p9f2.apps.googleusercontent.com";//
+        private const string CLIENT_SECRET_BIU = "QlUqccTF8ptowJKBov21uGNJ"; //"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";// 
+
+        private const string DOWNLOAD_FOLDER_RELATED_PATH = "1. Download";
 
         private ObservableCollection<UIGoogleFile> _uiGoogleFiles = new ObservableCollection<UIGoogleFile>();
         public ObservableCollection<UIGoogleFile> UIGoogleFiles
@@ -67,32 +69,32 @@ namespace WorkTools.Modules.Windows.ViewModels
         private async void OnSingInAsync()
         {
 
-            _fileDataStore = new EncryptedFileDataStore(FILESTORE_KEY);
+            _fileDataStore = new EncryptedFileDataStore(FILESTORE_KEY); //new FileDataStore(FILESTORE_KEY);
             //var test = new FileDataStore(FileDataStore.GenerateStoredKey("test", GetType()));
             using (FileStream fs = new FileStream("Configuration/client_secret.json", FileMode.Open, FileAccess.Read))
             {
                 try
                 {
-                    _credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.FromStream(fs).Secrets, new[] { DriveService.Scope.Drive }, PERSISTENCE_CREDENTIAL_NAME, CancellationToken.None, _fileDataStore);
-                    
-                    //_credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    //    new ClientSecrets
-                    //    {
-                    //        ClientId = CLIENT_ID_BIU,
-                    //        ClientSecret = CLIENT_SECRET_BIU
-                    //    },
-                    //    new[] { DriveService.Scope.Drive },
-                    //    PERSISTENCE_CREDENTIAL_NAME,
-                    //    CancellationToken.None,
-                    //    _fileDataStore);
+                    //_credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.FromStream(fs).Secrets, new[] { DriveService.Scope.Drive }, PERSISTENCE_CREDENTIAL_NAME, CancellationToken.None, _fileDataStore);
+
+                    _credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        new ClientSecrets
+                        {
+                            ClientId = CLIENT_ID_BIU,
+                            ClientSecret = CLIENT_SECRET_BIU
+                        },
+                        new[] { DriveService.Scope.Drive },
+                        PERSISTENCE_CREDENTIAL_NAME,
+                        CancellationToken.None,
+                        _fileDataStore);
 
                     if (_credential.Token.IsExpired(SystemClock.Default))
                     {
                         AppendContent("Token is expired, need refresh.");
                         if (!await _credential.RefreshTokenAsync(CancellationToken.None))
-                            AppendContent("Failed to refresh token!");
+                            Content = "Failed to refresh token!";
                         else
-                            AppendContent("Refresh token successfully!");
+                            Content = "Refresh token successfully!";
                     }
                 }
                 catch (Exception ex)
@@ -108,10 +110,29 @@ namespace WorkTools.Modules.Windows.ViewModels
             stringBuilder.AppendLine($"AccessToken: {_credential.Token.AccessToken}");
             stringBuilder.AppendLine($"AccessToken expires in seconds: {_credential.Token.ExpiresInSeconds}");
             stringBuilder.AppendLine($"RefreshToken: {_credential.Token.RefreshToken}");
-            Content += stringBuilder.ToString();
+           
             _currentDirID = FILEID_ROOT;
             //// Brings this app back to the foreground.
             //this.Activate();
+
+            About about = await GetUserInfo();
+            stringBuilder.AppendLine($"User display name: {about?.User.DisplayName}");
+            stringBuilder.AppendLine($"User email address: {about?.User.EmailAddress}");
+            stringBuilder.AppendLine($"User photo link: {about?.User.PhotoLink}");
+            AppendContent(stringBuilder.ToString());
+        }
+
+        private async Task<About> GetUserInfo()
+        {
+            var driveService = new DriveService(new Google.Apis.Services.BaseClientService.Initializer()
+            {
+                HttpClientInitializer = _credential,
+                ApplicationName = "WPF UI Testbed"
+            });
+
+            var userAboutRequest = driveService.About.Get();
+            userAboutRequest.Fields = "*";
+            return await userAboutRequest.ExecuteAsync(CancellationToken.None);
         }
 
         private async void OnRevokeAsync()
@@ -126,7 +147,7 @@ namespace WorkTools.Modules.Windows.ViewModels
 
             if (revoked)
             {
-                //await _fileDataStore.DeleteAsync(PERSISTENCE_CREDENTIAL_NAME);
+                //await _fileDataStore.DeleteAsync<EncryptedFileDataStore>(PERSISTENCE_CREDENTIAL_NAME);
                 await _fileDataStore?.ClearAsync();
                 Content += Environment.NewLine + "Revoked";
                 _credential = null;
@@ -156,6 +177,9 @@ namespace WorkTools.Modules.Windows.ViewModels
             }
             else
             {
+                if (!Directory.Exists(DOWNLOAD_FOLDER_RELATED_PATH))
+                    Directory.CreateDirectory(DOWNLOAD_FOLDER_RELATED_PATH);
+
                 if (uiGoogleFile.GoogleFile.MimeType.Contains("application/vnd.google-apps"))
                     await Export(uiGoogleFile);
                 else
@@ -198,7 +222,7 @@ namespace WorkTools.Modules.Windows.ViewModels
                 allFiles.AddRange(result.Files);
             }
 
-            allFiles.ForEach(async file =>
+            allFiles.ForEach(file =>
             {
 
                 //FilesResource.GetRequest getRequest = driveService.Files.Get(file.Id);
@@ -252,7 +276,7 @@ namespace WorkTools.Modules.Windows.ViewModels
 
             FilesResource.ExportRequest exportRequest = driveService.Files.Export(uiGoogleFile.Id, mimeType);
             string fileName = uiGoogleFile.GoogleFile.Name + ext;
-            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(Path.Combine(DOWNLOAD_FOLDER_RELATED_PATH, fileName), FileMode.Create, FileAccess.Write))
             {
                 exportRequest.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
                 {
@@ -260,7 +284,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                     {
                         case Google.Apis.Download.DownloadStatus.Downloading:
                             {
-                                RunOnUIThread(() => {
+                                RunOnUIThread(() =>
+                                {
                                     AppendContent($"Export '{fileName}' {progress.BytesDownloaded} bytes");
                                 });
                                 break;
@@ -275,7 +300,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                             }
                         case Google.Apis.Download.DownloadStatus.Failed:
                             {
-                                RunOnUIThread(() => {
+                                RunOnUIThread(() =>
+                                {
                                     AppendContent($"Export '{fileName}' failed, exception: {progress.Exception}");
                                 });
                                 break;
@@ -297,6 +323,9 @@ namespace WorkTools.Modules.Windows.ViewModels
                 AppendContent("revoked, has no ability to access google service");
                 return;
             }
+
+            AppendContent($"ThumbnailLink:{uiGoogleFile.GoogleFile?.ThumbnailLink}");
+
             var driveService = new DriveService(new Google.Apis.Services.BaseClientService.Initializer()
             {
                 HttpClientInitializer = _credential,
@@ -304,7 +333,7 @@ namespace WorkTools.Modules.Windows.ViewModels
             });
             string fileName = uiGoogleFile.GoogleFile.Name;
             FilesResource.GetRequest getRequest = driveService.Files.Get(uiGoogleFile.Id);
-            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(Path.Combine(DOWNLOAD_FOLDER_RELATED_PATH, fileName), FileMode.Create, FileAccess.Write))
             {
                 getRequest.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
                 {
@@ -312,8 +341,9 @@ namespace WorkTools.Modules.Windows.ViewModels
                     {
                         case Google.Apis.Download.DownloadStatus.Downloading:
                             {
-                                RunOnUIThread(() => {
-                                    AppendContent($"Download '{fileName}' {progress.BytesDownloaded} bytes");
+                                RunOnUIThread(() =>
+                                {
+                                    AppendContent($"Downloading '{fileName}' {progress.BytesDownloaded} bytes");
                                 });
                                 break;
                             }
@@ -327,7 +357,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                             }
                         case Google.Apis.Download.DownloadStatus.Failed:
                             {
-                                RunOnUIThread(() => {
+                                RunOnUIThread(() =>
+                                {
                                     AppendContent($"Download '{fileName}' failed, exception: {progress.Exception}");
                                 });
                                 break;
@@ -338,6 +369,7 @@ namespace WorkTools.Modules.Windows.ViewModels
                 {
                     AppendContent($"Download '{fileName}' started ");
                 });
+                //await getRequest.DownloadRangeAsync(fs, new System.Net.Http.Headers.RangeHeaderValue(0, 587637441));
                 await getRequest.DownloadAsync(fs);
             }
         }

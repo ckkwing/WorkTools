@@ -11,6 +11,10 @@ using Utility.Algorithms;
 
 namespace WorkTools.Modules.Windows
 {
+    /// <summary>
+    /// Encrypted file data store that implements <see cref="IDataStore"/>. This store creates a different file for each 
+    /// combination of type and key. This file data store stores a JSON format of the specified object.
+    /// </summary>
     internal class EncryptedFileDataStore : IDataStore
     {
         private const string XdgDataHomeSubdirectory = "google-filedatastore";
@@ -130,7 +134,7 @@ namespace WorkTools.Modules.Windows
                 try
                 {
                     var base64Content = File.ReadAllText(filePath);
-                    var serialized = Base64Helper.Decrypt(base64Content);
+                    var serialized = Base64Helper.Decode(base64Content);
                     tcs.SetResult(NewtonsoftJsonSerializer.Instance.Deserialize<T>(serialized));
                 }
                 catch (Exception ex)
@@ -160,7 +164,7 @@ namespace WorkTools.Modules.Windows
             }
 
             var serialized = NewtonsoftJsonSerializer.Instance.Serialize(value);
-            var base64Content = Base64Helper.Encrypt(serialized);
+            var base64Content = Base64Helper.Encode(serialized);
             var filePath = Path.Combine(folderPath, GenerateStoredKey(key, typeof(T)));
             File.WriteAllText(filePath, base64Content);
             return CompletedTask;

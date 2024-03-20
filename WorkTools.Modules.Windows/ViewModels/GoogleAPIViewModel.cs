@@ -242,8 +242,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                     break;
 
                 FilesResource.ListRequest listRequest = driveService.Files.List();
-                //listRequest.Q = $"'{root.Id}' in parents";
-                listRequest.Q = $"'{root.Id}' in parents AND mimeType != 'application/vnd.google-apps.folder' AND (fileExtension = 'mp4' OR fileExtension = 'txt')";
+                listRequest.Q = $"'{root.Id}' in parents AND trashed = false";
+                //listRequest.Q = $"'{root.Id}' in parents AND mimeType != 'application/vnd.google-apps.folder' AND (fileExtension = 'mp4' OR fileExtension = 'txt')";
                 listRequest.PageSize = 1000;
                 //listRequest.Fields = "nextPageToken, files(id, name)";
                 listRequest.Fields = "*";

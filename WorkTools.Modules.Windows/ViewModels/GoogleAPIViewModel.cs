@@ -23,14 +23,34 @@ namespace WorkTools.Modules.Windows.ViewModels
 {
     public class GoogleAPIViewModel : BaseViewModel
     {
+        struct ClientInfo
+        {
+            internal string Id;
+            internal string Secret;
+
+            internal ClientInfo(string id, string secret)
+            {
+                Id = id;
+                Secret = secret;
+            }
+        }
+
+        private static Dictionary<string, ClientInfo> _clientInfos = new Dictionary<string, ClientInfo>()
+        {
+            {"DVD", new ClientInfo("562722407610-vfdfel9djk3njbt189qvpic7udf8p9f2.apps.googleusercontent.com", "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") },
+            {"BIU", new ClientInfo("14450100300-pptinqi1g1mf9p0foju8c7487nhe2bbr.apps.googleusercontent.com", "QlUqccTF8ptowJKBov21uGNJ") },
+            {"ERIC", new ClientInfo("893694845153-6u06bgtka7dai0ngkgm718peajlgc7ul.apps.googleusercontent.com", "gAcxJv36tL8Zmwssha8f35kx") },
+        };
+
         private UserCredential _credential;
-        EncryptedFileDataStore _fileDataStore;
+        FileDataStore _fileDataStore;
         private const string FILESTORE_KEY = "echen.google.oauth";
         private const string PERSISTENCE_CREDENTIAL_NAME = "echen";
         private const string FILEID_ROOT = "root";
 
-        private const string CLIENT_ID_BIU = "14450100300-pptinqi1g1mf9p0foju8c7487nhe2bbr.apps.googleusercontent.com"; //"562722407610-vfdfel9djk3njbt189qvpic7udf8p9f2.apps.googleusercontent.com";//
-        private const string CLIENT_SECRET_BIU = "QlUqccTF8ptowJKBov21uGNJ"; //"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";// 
+        private static ClientInfo _defaultClientInfo = _clientInfos["DVD"];
+        private static string CLIENT_ID_BIU = _defaultClientInfo.Id;
+        private static string CLIENT_SECRET_BIU = _defaultClientInfo.Secret;
 
         private const string DOWNLOAD_FOLDER_RELATED_PATH = "1. Download";
 
@@ -60,6 +80,7 @@ namespace WorkTools.Modules.Windows.ViewModels
         public ICommand EnterUIGoogleFileCommand => new DelegateCommand<UIGoogleFile>(OnEnterUIGoogleFileAsync, (uiGoogleFile) => true);
         public ICommand SingInCommand => new DelegateCommand(OnSingInAsync, () => true);
         public ICommand RevokeCommand => new DelegateCommand(OnRevokeAsync, () => true);
+        public ICommand ReauthorizeCommand => new DelegateCommand(OnReauthorizeAsync, () => true);
 
         public ICommand ListCommand => new DelegateCommand(OnListAsync, () => true);
         public ICommand ClearContentCommand => new DelegateCommand(() => { Content = string.Empty; }, () => true);
@@ -69,9 +90,10 @@ namespace WorkTools.Modules.Windows.ViewModels
         private async void OnSingInAsync()
         {
 
-            _fileDataStore = new EncryptedFileDataStore(FILESTORE_KEY); //new FileDataStore(FILESTORE_KEY);
+            _fileDataStore = new FileDataStore(FILESTORE_KEY); //new EncryptedFileDataStore(FILESTORE_KEY);
             //var test = new FileDataStore(FileDataStore.GenerateStoredKey("test", GetType()));
-            using (FileStream fs = new FileStream("Configuration/client_secret.json", FileMode.Open, FileAccess.Read))
+
+            //using (FileStream fs = new FileStream("Configuration/client_secret.json", FileMode.Open, FileAccess.Read))
             {
                 try
                 {
@@ -157,6 +179,15 @@ namespace WorkTools.Modules.Windows.ViewModels
                 Content += Environment.NewLine + "Revoke failed";
         }
 
+        private async void OnReauthorizeAsync()
+        {
+            if (await _credential?.RevokeTokenAsync(CancellationToken.None))
+            {
+                await GoogleWebAuthorizationBroker.ReauthorizeAsync(_credential, CancellationToken.None);
+                About about = await GetUserInfo();
+            }
+        }
+
         private async void OnListAsync()
         {
             _currentDirID = FILEID_ROOT;
@@ -211,7 +242,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                     break;
 
                 FilesResource.ListRequest listRequest = driveService.Files.List();
-                listRequest.Q = $"'{root.Id}' in parents";
+                //listRequest.Q = $"'{root.Id}' in parents";
+                listRequest.Q = $"'{root.Id}' in parents AND mimeType != 'application/vnd.google-apps.folder' AND (fileExtension = 'mp4' OR fileExtension = 'txt')";
                 listRequest.PageSize = 1000;
                 //listRequest.Fields = "nextPageToken, files(id, name)";
                 listRequest.Fields = "*";

@@ -27,6 +27,7 @@
                 <Image Source="../Resources/btn_google_sign-in.png" Stretch="UniformToFill"/>
             </Button>
             <Button x:Name="BtnRevoke" Content="Revoke" Command="{Binding Path=RevokeCommand}"></Button>
+            <Button x:Name="BtnReauthorize" Content="Reauthorize" Command="{Binding Path=ReauthorizeCommand}"></Button>
             <Button x:Name="BtnList" Content="List(Root)" Command="{Binding Path=ListCommand}"></Button>
             <Button x:Name="BtnClearLog" Content="Clear log" Command="{Binding Path=ClearContentCommand}"></Button>
         </StackPanel>

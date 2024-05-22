@@ -37,9 +37,9 @@ namespace WorkTools.Modules.Windows.ViewModels
 
         private static Dictionary<string, ClientInfo> _clientInfos = new Dictionary<string, ClientInfo>()
         {
-            {"DVD", new ClientInfo("562722407610-vfdfel9djk3njbt189qvpic7udf8p9f2.apps.googleusercontent.com", "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") },
-            {"BIU", new ClientInfo("14450100300-pptinqi1g1mf9p0foju8c7487nhe2bbr.apps.googleusercontent.com", "QlUqccTF8ptowJKBov21uGNJ") },
-            {"ERIC", new ClientInfo("893694845153-6u06bgtka7dai0ngkgm718peajlgc7ul.apps.googleusercontent.com", "gAcxJv36tL8Zmwssha8f35kx") },
+            {"DVD", new ClientInfo("[Client_ID]", "[Client_Secret]") },
+            {"BIU", new ClientInfo("[Client_ID]", "[Client_Secret]") },
+            {"ERIC", new ClientInfo("[Client_ID]", "[Client_Secret]") }
         };
 
         private UserCredential _credential;
@@ -84,8 +84,6 @@ namespace WorkTools.Modules.Windows.ViewModels
 
         public ICommand ListCommand => new DelegateCommand(OnListAsync, () => true);
         public ICommand ClearContentCommand => new DelegateCommand(() => { Content = string.Empty; }, () => true);
-
-
 
         private async void OnSingInAsync()
         {

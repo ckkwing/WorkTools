@@ -172,6 +172,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ResourceDictionaryCopyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StringWorkbenchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,6 +186,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant.cs" />
     <Compile Include="EncryptedFileDataStore.cs" />
     <Compile Include="Models\UIGoogleFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -201,6 +206,7 @@
     <Compile Include="ViewModels\FileWatcherViewModel.cs" />
     <Compile Include="ViewModels\GoogleAPIViewModel.cs" />
     <Compile Include="ViewModels\RemoteLogOnViewModel.cs" />
+    <Compile Include="ViewModels\ResourceDictionaryCopyViewModel.cs" />
     <Compile Include="ViewModels\StringWorkbenchViewModel.cs" />
     <Compile Include="ViewModels\WindowsToolsMainViewModel.cs" />
     <Compile Include="Views\DiffToolView.xaml.cs">
@@ -214,6 +220,9 @@
     </Compile>
     <Compile Include="Views\RemoteLogOnView.xaml.cs">
       <DependentUpon>RemoteLogOnView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceDictionaryCopyView.xaml.cs">
+      <DependentUpon>ResourceDictionaryCopyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StringWorkbenchView.xaml.cs">
       <DependentUpon>StringWorkbenchView.xaml</DependentUpon>

@@ -5,7 +5,7 @@
 
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="MinWidth" Value="80" />
-        <Setter Property="MaxWidth" Value="180" />
+        <!--<Setter Property="MaxWidth" Value="180" />-->
         <Setter Property="Height" Value="22" />
     </Style>
 

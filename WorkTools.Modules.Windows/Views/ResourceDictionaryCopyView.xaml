@@ -1,0 +1,46 @@
+﻿<Window x:Class="WorkTools.Modules.Windows.Views.ResourceDictionaryCopyView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkTools.Modules.Windows.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        WindowStartupLocation="CenterOwner"
+        Title="ResourceDictionaryCopyView" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Select a template language file:" />
+                <Button Content="Select" Command="{Binding Path=SelectTemplateFileCommand}" />
+            </StackPanel>
+            <TextBlock Text="{Binding TemplateFile}" />
+        </StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Select source folder:" />
+                <Button Content="Select" Command="{Binding Path=SelectFolderCommand}" CommandParameter="source" />
+            </StackPanel>
+            <TextBlock Text="{Binding Source}" />
+        </StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Select target folder:" />
+                <Button Content="Select" Command="{Binding Path=SelectFolderCommand}" CommandParameter="target" />
+            </StackPanel>
+            <TextBlock Text="{Binding Target}" />
+        </StackPanel>
+        <StackPanel>
+            <TextBlock Text="Add string to find in source folder:" />
+            <TextBox Text="{Binding NewString}" />
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="Insert Key" IsChecked="{Binding IsUseIDSKey}" />
+                <Button Content="Add" Command="{Binding AddStringCommand}" HorizontalAlignment="Left" />
+                <Button Content="Copy strings from source to target" Command="{Binding CopyCommand}" HorizontalAlignment="Left" />
+                <TextBlock Text="The new string key prefix:" />
+                <TextBox Text="{Binding KeyPrefix}" />
+            </StackPanel>
+            <ListBox ItemsSource="{Binding NewStrings}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

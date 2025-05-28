@@ -12,14 +12,21 @@
             <Setter Property="Width" Value="Auto" />
         </Style>
     </UserControl.Resources>
-    <WrapPanel>
-        <Button Content="Lock files" Command="{Binding Path=LockFileCommand}" />
-        <Button Content="Unlock locked files" Command="{Binding Path=UnlockFileCommand}" />
-        <Button Content="File System Watcher" Command="{Binding Path=OpenFileWatcherCommand}" />
-        <Button Content="Remote log on" Command="{Binding Path=LogonRemoteCommand}" />
-        <Button Content="Export Xaml string to Excel" Command="{Binding Path=ExportXamlStringtoExcel}" />
-        <Button Content="Diff tool" Command="{Binding Path=OpenDiffToolCommand}" />
-        <Button Content="SMB/CIFS" Command="{Binding Path=OpenDiffToolCommand}" />
-        <Button Content="Google API" Command="{Binding Path=AccessGoogleAPICommand}" />
-    </WrapPanel>
+    <StackPanel>
+        <WrapPanel>
+            <Button Content="Lock files" Command="{Binding Path=LockFileCommand}" />
+            <Button Content="Unlock locked files" Command="{Binding Path=UnlockFileCommand}" />
+            <Button Content="File System Watcher" Command="{Binding Path=OpenFileWatcherCommand}" />
+            <Button Content="Remote log on" Command="{Binding Path=LogonRemoteCommand}" />
+            <Button Content="Export Xaml string to Excel" Command="{Binding Path=ExportXamlStringtoExcel}" />
+            <Button Content="Diff tool" Command="{Binding Path=OpenDiffToolCommand}" />
+            <Button Content="SMB/CIFS" Command="{Binding Path=OpenDiffToolCommand}" />
+            <Button Content="Google API" Command="{Binding Path=AccessGoogleAPICommand}" />
+        </WrapPanel>
+        <Rectangle Stroke="Black" StrokeThickness="2" />
+        <TextBlock Text="Nero tools:" />
+        <WrapPanel>
+            <Button Content="ResourceDictionary string copy" Command="{Binding Path=ResourceDictionaryCopyCommand}" />
+        </WrapPanel>
+    </StackPanel>
 </UserControl>

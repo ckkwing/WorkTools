@@ -16,6 +16,7 @@ using System.Xaml;
 using System.Xml;
 using Utility.Extensions;
 using WorkTools.Infrastructure;
+using WorkTools.Modules.Windows.Helpers;
 using WorkTools.Modules.Windows.Properties;
 
 namespace WorkTools.Modules.Windows.ViewModels
@@ -165,8 +166,8 @@ namespace WorkTools.Modules.Windows.ViewModels
                     if (targetFile.IsNullOrEmpty())
                         continue;
 
-                    ResourceDictionary sourceDictionary = LoadStyleDictionaryFromFile(sourceFile);
-                    ResourceDictionary targetDictionary = LoadStyleDictionaryFromFile(targetFile);
+                    ResourceDictionary sourceDictionary = Helper.LoadStyleDictionaryFromFile(sourceFile);
+                    ResourceDictionary targetDictionary = Helper.LoadStyleDictionaryFromFile(targetFile);
                     IDictionary<string, string> keyValuePairs = new Dictionary<string, string>();
                     foreach (string key in keysInTemplate)
                     {
@@ -212,7 +213,7 @@ namespace WorkTools.Modules.Windows.ViewModels
             }
             else
             {
-                ResourceDictionary resourceDictionary = LoadStyleDictionaryFromFile(TemplateFile);
+                ResourceDictionary resourceDictionary = Helper.LoadStyleDictionaryFromFile(TemplateFile);
                 foreach (string strValue in NewStrings)
                 {
                     foreach (var key in resourceDictionary.Keys)
@@ -230,26 +231,26 @@ namespace WorkTools.Modules.Windows.ViewModels
             return keys;
         }
 
-        public ResourceDictionary LoadStyleDictionaryFromFile(string inFileName)
-        {
-            ResourceDictionary resourceDictionary = null;
-            if (File.Exists(inFileName))
-            {
-                try
-                {
-                    using (var fs = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        // Read in ResourceDictionary File
-                        resourceDictionary = (ResourceDictionary)System.Windows.Markup.XamlReader.Load(fs);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("LoadStyleDictionaryFromFile:" + ex.Message);
-                }
-            }
-            return resourceDictionary;
-        }
+        //public ResourceDictionary LoadStyleDictionaryFromFile(string inFileName)
+        //{
+        //    ResourceDictionary resourceDictionary = null;
+        //    if (File.Exists(inFileName))
+        //    {
+        //        try
+        //        {
+        //            using (var fs = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //            {
+        //                // Read in ResourceDictionary File
+        //                resourceDictionary = (ResourceDictionary)System.Windows.Markup.XamlReader.Load(fs);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Debug.WriteLine("LoadStyleDictionaryFromFile:" + ex.Message);
+        //        }
+        //    }
+        //    return resourceDictionary;
+        //}
 
         private void OnAddString()
         {

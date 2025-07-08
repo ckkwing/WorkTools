@@ -38,6 +38,12 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=8.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\build\packages\EPPlus.8.0.5\lib\net35\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\build\packages\EPPlus.Interfaces.8.0.0\lib\net35\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="GongShell">
       <HintPath>..\3rd\gong-shell-0.6.0\GongShell.dll</HintPath>
     </Reference>
@@ -109,6 +115,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Build\x86\Debug\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\build\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
       <Private>True</Private>
@@ -176,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ResourceDictionaryToExcelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StringWorkbenchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,6 +199,7 @@
   <ItemGroup>
     <Compile Include="Constant.cs" />
     <Compile Include="EncryptedFileDataStore.cs" />
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Models\UIGoogleFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -207,6 +219,7 @@
     <Compile Include="ViewModels\GoogleAPIViewModel.cs" />
     <Compile Include="ViewModels\RemoteLogOnViewModel.cs" />
     <Compile Include="ViewModels\ResourceDictionaryCopyViewModel.cs" />
+    <Compile Include="ViewModels\ResourceDictionaryToExcelViewModel.cs" />
     <Compile Include="ViewModels\StringWorkbenchViewModel.cs" />
     <Compile Include="ViewModels\WindowsToolsMainViewModel.cs" />
     <Compile Include="Views\DiffToolView.xaml.cs">
@@ -223,6 +236,9 @@
     </Compile>
     <Compile Include="Views\ResourceDictionaryCopyView.xaml.cs">
       <DependentUpon>ResourceDictionaryCopyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceDictionaryToExcelView.xaml.cs">
+      <DependentUpon>ResourceDictionaryToExcelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StringWorkbenchView.xaml.cs">
       <DependentUpon>StringWorkbenchView.xaml</DependentUpon>

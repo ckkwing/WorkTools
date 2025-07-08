@@ -27,6 +27,7 @@
         <TextBlock Text="Nero tools:" />
         <WrapPanel>
             <Button Content="ResourceDictionary string copy" Command="{Binding Path=ResourceDictionaryCopyCommand}" />
+            <Button Content="ResourceDictionary To Excel" Command="{Binding Path=ResourceDictionaryToExcelCommand}" />
         </WrapPanel>
     </StackPanel>
 </UserControl>

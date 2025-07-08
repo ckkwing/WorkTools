@@ -1,0 +1,29 @@
+﻿<Window x:Class="WorkTools.Modules.Windows.Views.ResourceDictionaryToExcelView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkTools.Modules.Windows.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        WindowStartupLocation="CenterOwner"
+        Title="ResourceDictionaryToExcelView" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Select a language file:" />
+                <Button Content="Select" Command="{Binding Path=SelectLanguageFileCommand}" />
+            </StackPanel>
+            <TextBlock Text="{Binding LanguageFile}" />
+        </StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Select a template file:" />
+                <Button Content="Select" Command="{Binding Path=SelectTemplateFileCommand}" />
+            </StackPanel>
+            <TextBlock Text="{Binding TemplateFile}" />
+        </StackPanel>
+        <Button Content="Export xmal string to excel" Command="{Binding Path=ExportCommand}" />
+        <TextBox Text="{Binding Output}" />
+    </StackPanel>
+</Window>

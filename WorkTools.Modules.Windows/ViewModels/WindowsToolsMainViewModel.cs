@@ -36,6 +36,9 @@ namespace WorkTools.Modules.Windows.ViewModels
         public DelegateCommand AccessGoogleAPICommand { get; private set; }
 
         public DelegateCommand ResourceDictionaryCopyCommand { get; private set; }
+
+        public DelegateCommand ResourceDictionaryToExcelCommand { get; private set; }
+
         public WindowsToolsMainViewModel(IRegionManager regionManager, IContainerExtension containerExtension)
         {
             _regionManager = regionManager;
@@ -54,6 +57,14 @@ namespace WorkTools.Modules.Windows.ViewModels
             OpenSMBCommand = new DelegateCommand(OnOpenSMB);
             AccessGoogleAPICommand = new DelegateCommand(OnAccessGoogleAPI);
             ResourceDictionaryCopyCommand = new DelegateCommand(OnResourceDictionaryCopy);
+            ResourceDictionaryToExcelCommand = new DelegateCommand(OnResourceDictionaryToExcel);
+        }
+
+        private void OnResourceDictionaryToExcel()
+        {
+            ResourceDictionaryToExcelView resourceDictionaryToExcelView = new ResourceDictionaryToExcelView();
+            resourceDictionaryToExcelView.Owner = Application.Current.MainWindow;
+            resourceDictionaryToExcelView.ShowDialog();
         }
 
         private void OnResourceDictionaryCopy()
